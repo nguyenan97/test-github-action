@@ -10,7 +10,7 @@ namespace FunctionApp1
         [FunctionName("Function1")]
         public void Run([TimerTrigger("0 */5 * * * *", RunOnStartup = true)]TimerInfo myTimer, ILogger log)
         {
-            log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
+            log.LogInformation($"----FunctionApp1 3.1 C# Timer trigger function executed at: {DateTime.Now}");
         }
     }
 }
