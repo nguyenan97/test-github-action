@@ -10,7 +10,7 @@ on:
 
 env:
   DOTNET_VERSION: "3.1.x"
-  PROJECT_FILE: "./FunctionApp1/FunctionApp1.csproj"
+  PROJECT_FILE: "./FunctionApp1/FunctionApp1/FunctionApp1.csproj"
   BUILD_NAME: "Weather"
   ARTIFACT_NAME: "Weather"
   AZURE_APP_NAME: ""
