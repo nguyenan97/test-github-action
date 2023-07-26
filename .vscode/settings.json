@@ -1,0 +1,10 @@
+{
+    "azureFunctions.projectSubpath": "FunctionApp1\\FunctionApp1",
+    "azureFunctions.deploySubpath": ".",
+    "azureFunctions.projectLanguage": "Python",
+    "azureFunctions.projectRuntime": "~4",
+    "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.preDeployTask": "publish (functions)",
+    "azureFunctions.scmDoBuildDuringDeployment": true,
+    "azureFunctions.pythonVenv": ".venv"
+}
