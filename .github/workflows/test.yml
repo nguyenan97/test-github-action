@@ -1,0 +1,81 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net..
+#
+
+name: Build and Deploy Weather to QC
+
+on:
+  push:
+    branches: ["main"]
+
+env:
+  DOTNET_VERSION: "3.1.x"
+  PROJECT_FILE: "./FunctionApp1/FunctionApp1/FunctionApp1.csproj"
+  BUILD_NAME: "Weather"
+  ARTIFACT_NAME: "Weather"
+  AZURE_APP_NAME: ""
+  PUBLIC_PROFILE_KEY: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE  }}
+  FUNCTION_CODE: ${{secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE}}
+
+jobs:
+  build:
+    runs-on: windows-latest # For Linux, use ubuntu-latest
+    environment: dev
+    steps:
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@v3
+
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: "Resolve Project Dependencies Using Dotnet"
+        shell: pwsh # For Linux, use bash
+        run: dotnet build ${{ env.PROJECT_FILE }} --configuration Release
+
+      - name: "Publish Project"
+        shell: pwsh # For Linux, use bash
+        run: |
+          pushd './'
+          dotnet publish ${{ env.PROJECT_FILE }} --configuration Release --output ./build/${{ env.BUILD_NAME}} --no-build
+          popd
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{env.ARTIFACT_NAME}}-${{ github.run_number }}
+          path: ./build/${{ env.BUILD_NAME}}
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment: 
+        name: 'staging'
+        url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    
+        
+
+    steps:     
+
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{env.ARTIFACT_NAME}}-${{ github.run_number }}
+          path: ./artifact
+
+      - name: Display structure of downloaded files
+        run: ls -R
+        working-directory: ./artifact
+
+      # - name: Extract artifact
+      #   run: unzip aep-portal-${{ github.run_number }}.zip -d extracted-artifact
+
+      - name:  Deploy to Function App
+        uses: azure/webapps-deploy@v2
+        id: deploy-to-webapp
+        with:
+          app-name: ${{env.AZURE_APP_NAME}}
+          publish-profile: ${{ env.PUBLIC_PROFILE_KEY }}
+          package: ./artifact
+    
+      
