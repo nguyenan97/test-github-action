@@ -10,7 +10,7 @@ on:
 env:
   
   BUILD_NAME: "TimerTrigger2"
-  ARTIFACT_NAME: "TimerTrigger2"
+  ARTIFACT_NAME: "Timer-Trigger-2"
   AZURE_APP_NAME: "TimerTrigger2"
   PUBLIC_PROFILE_KEY: ${{secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE}}
   FUNCTION_CODE: ${{secrets.FUNCTION_CODE}}
