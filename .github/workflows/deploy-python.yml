@@ -11,7 +11,7 @@ env:
   
   BUILD_NAME: "CommonDataModel"
   ARTIFACT_NAME: "CommonDataModel"
-  AZURE_APP_NAME: "common-data-model"
+  AZURE_APP_NAME: "common-data-model-2"
   PUBLIC_PROFILE_KEY: ${{secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE}}
   FUNCTION_CODE: ${{secrets.FUNCTION_CODE}}
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' 
