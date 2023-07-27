@@ -4,9 +4,7 @@
 
 name: Build and Deploy CommonDataModel to QC
 
-on:
-  push:
-    branches: ["main"]
+on: workflow_dispatch
 env:
   
   BUILD_NAME: "TimerTrigger2"
