@@ -4,21 +4,21 @@
 
 name: Build and Deploy Weather to QC
 
-#on:
-#  push:
-#    branches: ["main"]
-on: workflow_dispatch
+on:
+  push:
+    branches: ["main"]
+
 env:
-  DOTNET_VERSION: "7.0.x"
+  DOTNET_VERSION: "3.1.x"
   PROJECT_FILE: "./FunctionApp1/FunctionApp1/FunctionApp1.csproj"
   BUILD_NAME: "Weather"
   ARTIFACT_NAME: "Weather"
   AZURE_APP_NAME: ""
   PUBLIC_PROFILE_KEY: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE  }}
-  FUNCTION_CODE: ${{secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE}}
-
+  FUNCTION_CODE: ${{secrets.WEATHER_QC_FUNCTION_CODE}}
 jobs:
-  build:
+  build_deploy:    
+    name: Build And Deploy
     runs-on: windows-latest # For Linux, use ubuntu-latest
     environment: dev
     steps:
@@ -40,35 +40,6 @@ jobs:
           pushd './'
           dotnet publish ${{ env.PROJECT_FILE }} --configuration Release --output ./build/${{ env.BUILD_NAME}} --no-build
           popd
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{env.ARTIFACT_NAME}}-${{ github.run_number }}
-          path: ./build/${{ env.BUILD_NAME}}
-
-  deploy:
-    runs-on: windows-latest
-    needs: build
-    environment: 
-        name: 'staging'
-        url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
-        
-
-    steps:     
-
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: ${{env.ARTIFACT_NAME}}-${{ github.run_number }}
-          path: ./artifact
-
-      - name: Display structure of downloaded files
-        run: ls -R
-        working-directory: ./artifact
-
-      # - name: Extract artifact
-      #   run: unzip aep-portal-${{ github.run_number }}.zip -d extracted-artifact
 
       - name:  Deploy to Function App
         uses: azure/webapps-deploy@v2
@@ -76,6 +47,15 @@ jobs:
         with:
           app-name: ${{env.AZURE_APP_NAME}}
           publish-profile: ${{ env.PUBLIC_PROFILE_KEY }}
-          package: ./artifact
-    
-      
+          package: ./build/${{ env.BUILD_NAME}}
+          
+      - name: Ping To Application ${{ steps.deploy-to-webapp.outputs.webapp-url }} 
+        uses: emilioschepis/wait-for-endpoint@v1.0.2
+        with:
+             url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+             method: GET
+             expected-status: 200
+             timeout: 60000
+             interval: 1000
+
+  
