@@ -9,7 +9,7 @@ name: Build and Deploy Weather to QC
 #    branches: ["main"]
 on: workflow_dispatch
 env:
-  DOTNET_VERSION: "3.1.x"
+  DOTNET_VERSION: "7.0.x"
   PROJECT_FILE: "./FunctionApp1/FunctionApp1/FunctionApp1.csproj"
   BUILD_NAME: "Weather"
   ARTIFACT_NAME: "Weather"
