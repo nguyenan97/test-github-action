@@ -4,9 +4,7 @@
 
 name: Build and Deploy Weather to QC
 
-on:
-  push:
-    branches: ["main"]
+on: workflow_dispatch
 
 env:
   DOTNET_VERSION: "3.1.x"
