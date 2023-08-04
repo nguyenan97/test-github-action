@@ -8,9 +8,10 @@ name: Build and Deploy Weather to QC
 #  push:
 #    branches: ["main"]
 # on: workflow_dispatch
-on:  
-  pull_request:
-    branches: [ "main" ]
+on:
+  pull_request_target:
+    branches:
+      - 'main'
     paths:
     - "./FunctionApp1/FunctionApp1/**"
 env:
