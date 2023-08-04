@@ -13,7 +13,7 @@ on:
     branches:
       - 'main'
     paths:
-    - "./FunctionApp1/FunctionApp1/**"
+    - "FunctionApp1/FunctionApp1/**"
 env:
   DOTNET_VERSION: "3.1.x"
   PROJECT_FILE: "./FunctionApp1/FunctionApp1/FunctionApp1.csproj"
