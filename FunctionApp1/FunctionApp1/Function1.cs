@@ -2,7 +2,7 @@ using System;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
-
+//1 122222222222
 namespace FunctionApp1
 {
     public class Function1
